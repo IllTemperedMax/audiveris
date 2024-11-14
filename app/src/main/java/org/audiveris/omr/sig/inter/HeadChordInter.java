@@ -344,14 +344,16 @@ public class HeadChordInter
         }
 
         // Slur
-        for (Inter interNote : getNotes()) {
+        final List<? extends Inter> notes = getNotes();
+        for (Inter interNote : notes) {
             for (Relation rel : sig.getRelations(interNote, SlurHeadRelation.class)) {
                 SlurInter slur = (SlurInter) sig.getOppositeInter(interNote, rel);
                 HeadInter head = slur.getHead(HorizontalSide.LEFT);
 
-                if ((head != null) && head.getShape().isSmallHead()) {
-                    return (SmallChordInter) head.getChord();
-                }
+              if ((head != null) && head.getShape().isSmallHead()
+                  && head.getChord() instanceof SmallChordInter smallChordInter) {
+                return smallChordInter;
+              }
             }
         }
 
